@@ -28,7 +28,7 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
-      - ./log:/var/log/nginx
+      - /var/log/nginx:/var/log/nginx
       - ./config/promtail-local-config.yaml:/etc/promtail/promtail-local-config.yaml
     command: -config.file=/etc/promtail/promtail-local-config.yaml
     ports:
