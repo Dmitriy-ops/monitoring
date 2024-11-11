@@ -6,20 +6,30 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://loki:3100/loki/api/v1/push
+  - url: http://localhost:3100/loki/api/v1/push
 
 scrape_configs:
-- job_name: test
+- job_name: nginx
   static_configs:
   - targets:
       - localhost
     labels:
-      job: testlogs
-      __path__: /var/log/test/*log
-- job_name: root
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: rootlogs
-      __path__: /var/log/root/*log
+      job: nginxlogs
+      __path__: /var/log/nginx/*log
+  pipeline_stages:
+    - match:
+        selector: '{job="nginxlogs"}'
+        stages:
+        - regex:
+            expression: '^(?P<remote_addr>[\w\.]+) - (?P<remote_user>[^ ]*) \\[(?P<time_local>.*)\\] "(?P<method>[^ ]*) (?P<request>[^ ]*) (?P<protocol>[^ ]*)"'
+        - labels:
+            remote_addr:
+            remote_user:
+            time_local:
+            method:
+            request:
+            protocol:
+            status:
+            body_bytes_sent:
+            http_referer:
+            http_user_agent:
