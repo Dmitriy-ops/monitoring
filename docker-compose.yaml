@@ -15,8 +15,8 @@ services:
     image: grafana/loki:2.0.0
     container_name: loki
     volumes:
-      - ./config/loki.yaml:/etc/loki/loki.yaml  # Убедитесь, что путь правильный
-      - ./loki-data:/loki  # Директория для хранения данных Loki
+      - ./config/loki.yaml:/etc/loki/loki.yaml
+      - ./loki-data:/loki
     command: -config.file=/etc/loki/loki.yaml
     ports:
       - "3100:3100"
