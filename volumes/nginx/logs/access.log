@@ -1,1 +1,4 @@
 134.17.170.54 - - [11/Nov/2024:23:21:21 +0000] "GET / HTTP/1.1" 200 615 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15" "-"
+114.35.165.165 - - [11/Nov/2024:23:41:15 +0000] "GET / HTTP/1.0" 200 615 "-" "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30" "-"
+185.191.126.248 - - [11/Nov/2024:23:42:23 +0000] "GET / HTTP/1.1" 200 615 "-" "-" "-"
+104.40.50.140 - - [11/Nov/2024:23:45:40 +0000] "MGLNDD_185.197.75.197_8000" 400 157 "-" "-" "-"
