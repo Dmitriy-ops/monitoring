@@ -2,6 +2,9 @@ services:
   my-nginx-service:
     image: nginx:latest
     container_name: nginx-service
+    volumes:
+     # logs
+     - ./volumes/nginx/logs:/var/log/nginx/
     ports:
       - "8000:80"
 
@@ -25,11 +28,13 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
-      - ./log:/var/log/test
+      - ./log:/var/log/nginx
       - ./config/promtail-local-config.yaml:/etc/promtail/promtail-local-config.yaml
     command: -config.file=/etc/promtail/promtail-local-config.yaml
     ports:
       - "9080:9080"
+    depends_on:
+      - loki
 
   prometheus:
     image: prom/prometheus:latest
