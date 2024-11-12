@@ -1,3 +1,3 @@
 positions:
-  /var/log/nginx/access.log: "607"
-  /var/log/nginx/error.log: "3816"
+  /var/log/nginx/access.log: "5049"
+  /var/log/nginx/error.log: "16296"
