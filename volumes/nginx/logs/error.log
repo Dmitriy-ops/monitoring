@@ -260,3 +260,10 @@
 2024/11/12 12:54:12 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
 2024/11/12 12:54:12 [notice] 1#1: start worker processes
 2024/11/12 12:54:12 [notice] 1#1: start worker process 29
+2024/11/12 14:07:26 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/11/12 14:07:26 [notice] 29#29: gracefully shutting down
+2024/11/12 14:07:26 [notice] 29#29: exiting
+2024/11/12 14:07:26 [notice] 29#29: exit
+2024/11/12 14:07:26 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/11/12 14:07:26 [notice] 1#1: worker process 29 exited with code 0
+2024/11/12 14:07:26 [notice] 1#1: exit
