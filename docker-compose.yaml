@@ -2,8 +2,6 @@ services:
   nginx-service:
     image: nginx:latest
     container_name: nginx-service
-    volumes:
-      - ./volumes/nginx/logs:/var/log/nginx/
     restart: unless-stopped
 
   grafana:
@@ -35,7 +33,7 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
-      - ./volumes/nginx/logs:/var/log/nginx
+      - /var/log/nginx:/var/log/nginx
       - ./config/promtail-local-config.yaml:/etc/promtail/promtail-local-config.yaml
     command: -config.file=/etc/promtail/promtail-local-config.yaml
     depends_on:
