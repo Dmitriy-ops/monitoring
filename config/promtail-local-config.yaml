@@ -5,7 +5,7 @@ positions:
   filename: /var/log/nginx/positions.yaml
 
 clients:
-  - url: http://loki:3100/loki/api/v1/push  # Убедитесь, что адрес соответствует вашему Loki
+  - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
   - job_name: nginx
@@ -13,5 +13,5 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: nginxlogs
-          __path__: /var/log/nginx/*.log  # Убедитесь, что это соответствует вашим логам
+          job: nginx
+          __path__: /var/log/nginx/*.log

@@ -3,27 +3,32 @@ services:
     image: nginx:latest
     container_name: nginx-service
     volumes:
-     - ./volumes/nginx/logs:/var/log/nginx/
-#    ports:
-#      - "80:80"
+      - ./volumes/nginx/logs:/var/log/nginx/
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     volumes:
-      - ./grafana/datasources:/etc/grafana/datasources
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     ports:
       - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123  # Устанавливаем пароль для администратора
+    restart: unless-stopped
 
   loki:
-    image: grafana/loki:2.0.0
+    image: grafana/loki:latest
     container_name: loki
     volumes:
       - ./config/loki.yaml:/etc/loki/loki.yaml
-      - ./loki-data:/loki
+      - loki-data:/loki
     command: -config.file=/etc/loki/loki.yaml
-#    ports:
-#      - "3100:3100"
+    # ports:
+    #   - "3100:3100"
+    restart: unless-stopped
 
   promtail:
     image: grafana/promtail:latest
@@ -32,10 +37,11 @@ services:
       - ./volumes/nginx/logs:/var/log/nginx
       - ./config/promtail-local-config.yaml:/etc/promtail/promtail-local-config.yaml
     command: -config.file=/etc/promtail/promtail-local-config.yaml
-    ports:
-      - "9080:9080"
     depends_on:
       - loki
+    # ports:
+    #   - "9080:9080"
+    restart: unless-stopped
 
   prometheus:
     image: prom/prometheus:latest
@@ -44,8 +50,9 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - --config.file=/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
+    # ports:
+    #   - "9090:9090"
+    restart: unless-stopped
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -59,5 +66,10 @@ services:
       - --path.sysfs=/host/sys
       - --collector.filesystem.ignored-mount-points
       - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)
-#    ports:
-#      - "9100:9100"
+    # ports:
+    #   - "9100:9100"
+    restart: unless-stopped
+
+volumes:
+  grafana-data:
+  loki-data:
