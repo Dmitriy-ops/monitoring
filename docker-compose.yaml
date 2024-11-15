@@ -2,7 +2,14 @@ services:
   nginx-service:
     image: nginx:latest
     container_name: nginx-service
+    labels:
+      logging: "promtail"
+      logging_jobname: "containerlogs"
     restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
   grafana:
     image: grafana/grafana:latest
@@ -12,11 +19,11 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - grafana-data:/var/lib/grafana
       - ./grafana/dashboards:/var/lib/grafana/dashboards
-    ports:
-      - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin123  # Устанавливаем пароль для администратора
     restart: unless-stopped
+    # ports:
+    #   - "3000:3000"
 
   loki:
     image: grafana/loki:latest
@@ -25,8 +32,6 @@ services:
       - ./config/loki.yaml:/etc/loki/loki.yaml
       - loki-data:/loki
     command: -config.file=/etc/loki/loki.yaml
-    # ports:
-    #   - "3100:3100"
     restart: unless-stopped
 
   promtail:
@@ -35,11 +40,10 @@ services:
     volumes:
       - /var/log/nginx:/var/log/nginx
       - ./config/promtail-local-config.yaml:/etc/promtail/promtail-local-config.yaml
+      - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/etc/promtail/promtail-local-config.yaml
     depends_on:
       - loki
-    # ports:
-    #   - "9080:9080"
     restart: unless-stopped
 
   prometheus:
@@ -49,8 +53,6 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - --config.file=/etc/prometheus/prometheus.yml
-    # ports:
-    #   - "9090:9090"
     restart: unless-stopped
 
   node-exporter:
@@ -65,8 +67,6 @@ services:
       - --path.sysfs=/host/sys
       - --collector.filesystem.ignored-mount-points
       - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)
-    # ports:
-    #   - "9100:9100"
     restart: unless-stopped
 
 volumes:
